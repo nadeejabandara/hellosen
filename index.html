@@ -309,9 +309,33 @@
             animation: floatingDream 7s linear infinite;
             z-index: 1;
         }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake-animation {
+            animation: shakeError 0.4s ease-in-out;
+        }  
     </style>
 </head>
 <body>
+
+
+    <div class="card active" id="loginCard">
+    <h2 class="header-title">For Your Eyes Only 🔐</h2>
+    <p style="margin-bottom: 20px; font-size: 1.2rem;">Please enter our secret password to view this page... ✨</p>
+    
+    <div style="margin-bottom: 20px;">
+        <input type="password" id="passwordField" placeholder="Enter password here..." 
+               style="width: 100%; padding: 14px; border-radius: 20px; border: 3px solid var(--bubblegum-pink); background: var(--input-bg); color: var(--text-color); font-size: 1.3rem; text-align: center; outline: none;">
+    </div>
+    
+    <button class="btn next-btn" onclick="checkPassword()">Unlock 💖</button>
+    <p id="loginError" style="margin-top: 15px; color: #ff477e; font-size: 1.1rem; min-height: 24px; font-weight: bold;"></p>
+    </div>
 
     <!-- ================= PAGE 1: THE ASK ================= -->
     <div class="card active" id="page1">
@@ -551,6 +575,57 @@
         document.body.appendChild(floater);
         setTimeout(() => { floater.remove(); }, 7000);
     }, 400);
+
+       // Password Configuration
+const SECRET_PASSWORD = "sen123"; // You can change this to whatever password you want!
+
+function checkPassword() {
+    const enteredPassword = document.getElementById('passwordField').value;
+    const loginCard = document.getElementById('loginCard');
+    const errorMsg = document.getElementById('loginError');
+
+    if (enteredPassword === SECRET_PASSWORD) {
+        // Correct password! Hide login card and load Page 1
+        loginCard.style.display = 'none';
+        loginCard.classList.remove('active');
+        
+        // Show Page 1 smoothly
+        navigateTo(1);
+    } else {
+        // Wrong password effect
+        errorMsg.innerText = "Oops! Wrong password, try again princess... 🥺❌";
+        loginCard.classList.add('shake-animation');
+        
+        // Clear input field
+        document.getElementById('passwordField').value = "";
+        
+        // Remove animation class after it finishes so it can shake again next time
+        setTimeout(() => {
+            loginCard.classList.remove('shake-animation');
+        }, 400);
+    }
+}
+
+// Allow pressing "Enter" key inside the input box to submit
+window.addEventListener('DOMContentLoaded', () => {
+    const passwordInput = document.getElementById('passwordField');
+    if(passwordInput) {
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    }
+
+    // CRITICAL FIX: Ensure page 1 does NOT show automatically on load anymore
+    // If the login card exists, keep other pages hidden initially
+    if(document.getElementById('loginCard')) {
+        document.querySelectorAll('.card').forEach(card => {
+            if(card.id !== 'loginCard') card.classList.remove('active');
+        });
+        document.getElementById('loginCard').style.display = 'block';
+    }
+});
 </script>
 </body>
 </html>
