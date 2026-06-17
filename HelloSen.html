@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Sen, My Favorite Person 💖</title>
+    <!-- Premium soft girl aesthetic font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    
+    <!-- canvas-confetti for celebration animations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- html2canvas library to convert the ticket element into a downloadable image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --bubblegum-pink: #ffb3c6;
+            --soft-blush: #ffe5ec;
+            --deep-rose: #ff477e;
+            --text-color: #5c1d2e;
+            --glow-grad: linear-gradient(135deg, #ff758f, #ffb3c6, #ff758f);
+        }
+
+        @keyframes softBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes floatingDream {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(180deg); opacity: 0; }
+        }
+
+        @keyframes romanticPulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 12px rgba(255,71,126,0.2); }
+            50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(255,71,126,0.5); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Bubblegum Sans', cursive, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        body {
+            background-color: var(--soft-blush);
+            background-image: radial-gradient(#ffc2d1 12%, transparent 12%), radial-gradient(#ffc2d1 12%, transparent 12%);
+            background-size: 34px 34px;
+            background-position: 0 0, 17px 17px;
+            color: var(--text-color);
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(255, 117, 143, 0.25);
+            border: 6px solid #fff;
+            outline: 3px solid var(--bubblegum-pink);
+            max-width: 520px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            display: none; 
+            max-height: 92vh;
+            overflow-y: auto; 
+            scrollbar-width: none;
+        }
+
+        .card::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            color: var(--deep-rose);
+            margin-bottom: 8px;
+        }
+
+        .reveal-box {
+            position: relative;
+            width: 280px; /* Slightly widened to gracefully accommodate text and emojis on one line */
+            height: 48px;
+            margin: 15px auto;
+            border-radius: 25px;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff5f7;
+            border: 2px dashed var(--bubblegum-pink);
+        }
+
+        .reveal-secret-text {
+            font-size: 1.6rem;
+            color: var(--deep-rose);
+            font-weight: bold;
+        }
+
+        .reveal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--glow-grad);
+            background-size: 200% 200%;
+            animation: gradientFlow 3s linear infinite;
+            color: var(--text-color); 
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px; /* Adds clean spacing around text and emojis */
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 2;
+        }
+
+        .reveal-box:hover .reveal-overlay,
+        .reveal-box:active .reveal-overlay {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .vibe-text {
+            font-size: 1.7rem;
+            color: var(--deep-rose);
+            display: inline-block;
+            margin: 12px 0;
+            animation: romanticPulse 3s infinite ease-in-out;
+        }
+
+        .deco-icons {
+            font-size: 2.5rem;
+            margin: 12px 0 24px 0;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .main-question {
+            font-size: 2.6rem;
+            color: var(--deep-rose);
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px var(--soft-blush);
+            margin-bottom: 28px;
+            line-height: 1.1;
+        }
+
+        textarea {
+            width: 100%;
+            height: 125px;
+            padding: 16px;
+            border-radius: 24px;
+            border: 3px solid var(--bubblegum-pink);
+            background: #fffbfd;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            box-shadow: inset 0 4px 8px rgba(255, 179, 198, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: var(--deep-rose);
+            background: #fff;
+            box-shadow: inset 0 4px 8px rgba(255, 179, 198, 0.1), 0 0 12px rgba(255, 75, 143, 0.2);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            min-height: 70px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 12px 38px;
+            font-size: 1.5rem;
+            border: 3px solid #fff;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 8px 0px var(--text-color);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0px var(--text-color);
+        }
+
+        .next-btn {
+            background-color: var(--deep-rose);
+            color: white;
+            box-shadow: 0 8px 0px #941b3f;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #4cc9f0, #00b4d8);
+            color: white;
+            box-shadow: 0 8px 0px #0077b6;
+            z-index: 10;
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #ff758f, var(--deep-rose));
+            color: white;
+            box-shadow: 0 8px 0px #941b3f;
+            z-index: 5;
+            transition: left 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .download-btn {
+            background-color: #ffccd5;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 10px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 0px var(--text-color);
+        }
+        .download-btn:active { box-shadow: 0 1px 0px var(--text-color); }
+
+        .ticket-wrapper {
+            padding: 12px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(255, 117, 143, 0.1);
+        }
+
+        .ticket {
+            background: #fff3f5;
+            border: 3px dashed var(--deep-rose);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .ticket::before, .ticket::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 26px;
+            height: 26px;
+            background-color: white;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            border: 3px solid var(--bubblegum-pink);
+        }
+        .ticket::before { left: -16px; }
+        .ticket::after { right: -16px; }
+
+        .timestamp {
+            font-size: 1.4rem;
+            color: var(--deep-rose);
+            margin-top: 15px;
+        }
+
+        .input-title {
+            font-size: 1.4rem;
+            color: var(--deep-rose);
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .wp-btn {
+            background: linear-gradient(135deg, #25D366, #1BD741);
+            color: white;
+            box-shadow: 0 8px 0px #0e722e;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .floater {
+            position: absolute;
+            bottom: -60px;
+            pointer-events: none;
+            animation: floatingDream 7s linear infinite;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= PAGE 1: THE ASK ================= -->
+    <div class="card active" id="page1">
+        <h2 class="header-title">Hello Sen! 🧚</h2>
+        
+        <div class="reveal-box" title="Scratch here!">
+            <!-- Text and sparkles cleanly centered horizontally and vertically -->
+            <div class="reveal-overlay">✨ Tap to reveal secret admirer ✨</div>
+            <div class="reveal-secret-text">I'm Nadeeja 😝</div>
+        </div>
+
+        <div class="vibe-text">I want to make you mine. 💕</div>
+        
+        <div class="deco-icons"><span>🥂</span><span>✨</span><span>💍</span><span>🌹</span><span>💖</span></div>
+
+        <h1 class="main-question">Will you be my girlfriend?</h1>
+        
+        <div class="btn-container">
+            <button class="btn" id="yesBtn">Yes! 😍</button>
+            <button class="btn" id="noBtn">No 😢</button>
+        </div>
+        <p style="margin-top: 18px; font-size: 1.1rem; color: var(--deep-rose);">Waiting for your absolute yes... ✨</p>
+    </div>
+
+    <!-- ================= PAGE 2: THE CELEBRATION & TICKET ================= -->
+    <div class="card" id="page2">
+        <h2 class="header-title" style="animation: softBounce 1.2s infinite ease-in-out;">OMG we're official! 🎉</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 12px;">You just made me the happiest guy alive fr 💖</p>
+        
+        <div class="ticket-wrapper" id="captureTarget">
+            <div class="ticket">
+                <p style="letter-spacing: 2px; font-size: 0.9rem; color: #b57c8a; text-transform: lowercase;">our lockscreen memory</p>
+                <h3 style="margin: 15px 0; color: var(--text-color); font-size: 2rem;">Nadeeja ❤️ Sen</h3>
+                <div class="timestamp" id="loveTimestamp">Loading magical moment...</div>
+            </div>
+        </div>
+
+        <button class="btn download-btn" id="downloadBtn">Save to device 📸</button>
+
+        <p style="margin-bottom: 18px; font-size: 1.1rem;">Quick vibe check on the next page... 🥰</p>
+        <button class="btn next-btn" onclick="navigateTo(3)">Next page 👉</button>
+    </div>
+
+    <!-- ================= PAGE 3: HER THOUGHTS ================= -->
+    <div class="card" id="page3">
+        <h2 class="header-title">Why I love our vibe... 📝</h2>
+        <p style="margin-bottom: 18px; font-size: 1.2rem;">Sen, tell me everything! Why do you like me? (Type as much as you want!)
+
+ ✨</p>
+        
+        <textarea id="herThoughtsInput" placeholder="Type out your whole heart, don't hold back... 💖"></textarea>
+        
+        <button class="btn next-btn" onclick="savePage3Data()">Next page 👉</button>
+    </div>
+
+    <!-- ================= PAGE 4: HABITS & WEAKNESSES TEXTBOXES ================= -->
+    <div class="card" id="page4">
+        <h2 class="header-title">Our transparency era 🔐</h2>
+        <p style="margin-bottom: 22px; font-size: 1.1rem;">Nobody is perfect, help me level up for us. What are things I do that make you overthink or what should I work on:</p>
+        
+        <div class="input-title">My toxic traits or gaps ⚠️</div>
+        <textarea id="badHabitsInput" placeholder="Be totally real with me here, Sen... I promise to listen and grow! 🥺"></textarea>
+
+        <div class="input-title">Habits you want us to build together 🌱</div>
+        <textarea id="wishedHabitsInput" placeholder="What should we start doing more often? Let's fix it... ✨"></textarea>
+        
+        <button class="btn next-btn" onclick="savePage4Data()">Lock it in ❤️</button>
+
+        <p style="margin-top: 20px; color: var(--deep-rose); font-size: 1.5rem;">I love you, Sen! 💕</p>
+        <div class="deco-icons" style="margin: 10px 0 0 0;">✨🩰🎀🧸🏹</div>
+    </div>
+
+    <!-- ================= PAGE 5: FINAL THANKING & WHATSAPP INTERACTION ================= -->
+    <div class="card" id="page5">
+        <h2 class="header-title" style="font-size: 2.8rem; margin-bottom: 15px;">Thank you, Sen! 🧚</h2>
+        <p style="font-size: 1.3rem; margin-bottom: 15px; line-height: 1.3;">
+            Sharing your thoughts means everything to me. I promise to cherish you, work on my flaws, and build the sweetest love story with you. Fr, you are my favorite person. 🩹❤️
+        </p>
+        
+        <div class="deco-icons"><span>🪽</span><span>☁️</span><span>🤍</span><span>💌</span><span>🧸</span></div>
+
+        <p style="font-size: 1.1rem; color: var(--deep-rose); margin-bottom: 10px; font-weight: bold;">
+            👇 Click below to instantly send me all your answers on WhatsApp!
+        </p>
+
+        <a href="#" class="btn wp-btn" id="whatsappShareBtn" target="_blank">Send 😚</a>
+        
+        <div style="font-size: 0.95rem; margin-top: 25px; color: #b57c8a;">Forever yours, Nadeeja ✨</div>
+    </div>
+
+   <script>
+    function navigateTo(pageNumber) {
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        document.getElementById(`page${pageNumber}`).classList.add('active');
+        
+        // Hide the No button if we move away from page 1
+        if (pageNumber !== 1) {
+            document.getElementById('noBtn').style.display = 'none';
+        }
+    }
+
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    function moveNoButton() {
+        // Force fixed positioning to break out of the card limits completely
+        noBtn.style.position = 'fixed';
+
+        const padding = 50; 
+        const buttonWidth = noBtn.offsetWidth || 100;
+        const buttonHeight = noBtn.offsetHeight || 50;
+
+        // Compute available space across the full viewport window
+        const maxX = window.innerWidth - buttonWidth - padding;
+        const maxY = window.innerHeight - buttonHeight - padding;
+
+        const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+        noBtn.style.left = `${randomX}px`;
+        noBtn.style.top = `${randomY}px`;
+    }
+
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+
+    yesBtn.addEventListener('click', () => {
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('en-US', { 
+            year: 'numeric', month: 'long', day: 'numeric' 
+        });
+        const formattedTime = now.toLocaleTimeString('en-US', { 
+            hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        });
+        const fullTimestamp = `${formattedDate} @ ${formattedTime}`;
+
+        localStorage.setItem('proposal_accepted_time', fullTimestamp);
+        document.getElementById('loveTimestamp').innerText = fullTimestamp;
+
+        navigateTo(2);
+        triggerConfetti();
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        const target = document.getElementById('captureTarget');
+        html2canvas(target, {
+            scale: 3,
+            backgroundColor: null,
+            logging: false
+        }).then(canvas => {
+            const imageURl = canvas.toDataURL("image/png");
+            const triggerLink = document.createElement('a');
+            triggerLink.download = 'Nadeeja_And_Sen_Love_Ticket.png';
+            triggerLink.href = imageURl;
+            document.body.appendChild(triggerLink);
+            triggerLink.click();
+            document.body.removeChild(triggerLink);
+        });
+    });
+
+    // Validates Page 3 text area before navigating
+    function savePage3Data() {
+        const thoughts = document.getElementById('herThoughtsInput').value.trim();
+        
+        if (thoughts === "") {
+            alert("Please type something, Sen! Don't leave it empty... 🥺💖");
+            return; // Stops the execution right here so she can't pass
+        }
+        
+        localStorage.setItem('sen_reasons_why', thoughts);
+        navigateTo(4);
+    }
+
+    // Validates Page 4 text areas before navigating
+    function savePage4Data() {
+        const badHabits = document.getElementById('badHabitsInput').value.trim();
+        const wishedHabits = document.getElementById('wishedHabitsInput').value.trim();
+        
+        if (badHabits === "" || wishedHabits === "") {
+            alert("Please fill out both boxes! I want to listen and grow for us... 🥺✨");
+            return; // Stops execution if either field is missing data
+        }
+        
+        localStorage.setItem('sen_feedback_bad_habits', badHabits);
+        localStorage.setItem('sen_feedback_wished_habits', wishedHabits);
+        
+        const savedTime = localStorage.getItem('proposal_accepted_time') || "just now";
+        const reasonsWhy = localStorage.getItem('sen_reasons_why') || "";
+        
+        const messageTemplate = `Hey Nadeeja! I finished your cute web letter page 🎀\n\n` +
+                                `💖 Our official time: ${savedTime}\n\n` +
+                                `✨ Why I like you:\n"${reasonsWhy}"\n\n` +
+                                `⚠️ Toxic traits to fix:\n"${badHabits}"\n\n` +
+                                `🌱 Habits to build:\n"${wishedHabits}"\n\n` +
+                                `I love you tons! 💕`;
+
+        const encodedText = encodeURIComponent(messageTemplate);
+        const myPhoneNumber = "94743783454"; 
+        
+        document.getElementById('whatsappShareBtn').href = `https://wa.me/${myPhoneNumber}?text=${encodedText}`;
+        
+        navigateTo(5);
+        triggerConfetti();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTime = localStorage.getItem('proposal_accepted_time');
+        const savedThoughts = localStorage.getItem('sen_reasons_why');
+        const savedBadHabits = localStorage.getItem('sen_feedback_bad_habits');
+        const savedWishedHabits = localStorage.getItem('sen_feedback_wished_habits');
+        
+        if (savedTime) { document.getElementById('loveTimestamp').innerText = savedTime; }
+        if (savedThoughts) { document.getElementById('herThoughtsInput').value = savedThoughts; }
+        if (savedBadHabits) { document.getElementById('badHabitsInput').value = savedBadHabits; }
+        if (savedWishedHabits) { document.getElementById('wishedHabitsInput').value = savedWishedHabits; }
+    });
+
+    function triggerConfetti() {
+        const end = Date.now() + (4 * 1000);
+        const colors = ['#ff477e', '#ff85a2', '#ffffff', '#b57c8a'];
+        (function frame() {
+            confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0, y: 0.8 }, colors: colors });
+            confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1, y: 0.8 }, colors: colors });
+            if (Date.now() < end) { requestAnimationFrame(frame); }
+        }());
+    }
+
+    const symbols = ['🎀', '✨', '💖', '🩰', '🧸', '🏹', '🌸', '🌹'];
+    setInterval(() => {
+        const floater = document.createElement('div');
+        floater.classList.add('floater');
+        floater.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        floater.style.left = Math.random() * 100 + 'vw';
+        floater.style.animationDuration = Math.random() * 3 + 4 + 's';
+        floater.style.fontSize = Math.random() * 1.6 + 1.2 + 'rem';
+        document.body.appendChild(floater);
+        setTimeout(() => { floater.remove(); }, 7000);
+    }, 400);
+</script>
+</body>
+</html>
